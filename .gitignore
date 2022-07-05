@@ -1,0 +1,10 @@
+#root folder venv files
+/venv
+/assets
+#config pswd files
+config.py
+
+/scripts.txt
+
+#ignore python compiled files
+*.pyc
