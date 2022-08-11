@@ -8,7 +8,7 @@ class Concurrent(Search):
     the multiple sources of code in the functionalities that will be used to scrape 
     all expected data from the sites determined by the system Scrapers.
     '''
-
+    
     def __init__(self,workers=20):
         self.workers = workers
 

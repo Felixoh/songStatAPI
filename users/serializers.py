@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from users.models import NewUser 
+from users.models import NewUser
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,4 +14,3 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
-        

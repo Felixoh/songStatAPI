@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin,BaseUserManager
 from django.conf import settings
 
-import datetime 
+import datetime
 from datetime import timedelta
 from datetime import datetime as dt
 from django.dispatch import receiver
@@ -61,7 +61,7 @@ class UserSettings(models.Model):
 
     def __str__(self):
         return self.user.username
-
+        
 # Membership information to the database as seen above
 class Membership(models.Model):
     MEMBERSHIP_CHOICES = (
@@ -75,7 +75,7 @@ class Membership(models.Model):
         ('Week','Week'),
         ('Months','Months')
     )
-     
+    
     slug = models.SlugField(null=True,blank=True)
     membership_type = models.CharField(choices=MEMBERSHIP_CHOICES,default='Free',max_length=30)
     duration = models.PositiveIntegerField(default=7)
