@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import permissions,status,serializers
-from users.models import NewUser
 
+from users.models import NewUser
 from spotAPI.models import Album,Track,Playlist,Artist
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -67,7 +67,7 @@ class TrackSerializer(serializers.ModelSerializer):
             'track_duration',
             'track_discNo'
         ]
-
+        
 class PlaylistSerializer(serializers.ModelSerializer):
     '''
     model instance to fetch related artist information to all artists:

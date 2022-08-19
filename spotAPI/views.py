@@ -3,23 +3,21 @@ from django.shortcuts import render
 from rest_framework.views import APIView,Response
 
 from users.models import NewUser
-from .serializers import HitJobSerializer,AlbumsSerializer, PlaylistSerializer, TrackSerializer,ArtistSerializer,SearchSerializer,ScheduleJobSerializer,UsersSerializer
+from .serializers import HitJobSerializer,AlbumsSerializer,PlaylistSerializer, TrackSerializer,ArtistSerializer,SearchSerializer,ScheduleJobSerializer,UsersSerializer
 
 from rest_framework import permissions,status
 from .tasks import fetch_albumsDT,fetch_track_info
 from spotAPI.models import Album,Track,Artist,Playlist
 from scraper.search import search_all
-from dateutil import parser 
+from dateutil import parser
 from django_celery_beat.models import PeriodicTask,CrontabSchedule
 import json
 
 # Create your views here.
 # your first quick experience as a medieval junior software engineer in Django and React
-
 class StartNewWorker(APIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = HitJobSerializer
-
     def post(self,request):
         name = request.data.get("target_name")
         serializer_class = HitJobSerializer
@@ -82,6 +80,7 @@ class SearchView(APIView):
 class Users(APIView):
     '''
     Lists an Album and allow user create a new Album
+
     '''
 
     permission_classes = [permissions.IsAdminUser]
@@ -100,7 +99,6 @@ class Users(APIView):
 class AlbumsList(APIView):
     '''
     Lists an Album and allow user create a new Album
-    
     '''
     permission_classes = [permissions.IsAuthenticated]
 
@@ -118,12 +116,10 @@ class AlbumsList(APIView):
 
 class AlbumDetail(APIView):
     '''
-    Performs actions of PUT,DELETE and RETREIVE on the object specified
-
+    Performs actions of PUT,DELETE and RETREIVE on the object specified 
     '''
 
     # permission_classes = [permissions.]
-
     def get_object(self,pk):
         try:
             return Album.objects.get(pk=pk)
@@ -150,7 +146,6 @@ class AlbumDetail(APIView):
 
 class TrackList(APIView):
     permission_classes = [permissions.IsAuthenticated]
-
     def get(self,request,format=None):
         tracklist = Track.objects.all()[:31]
         serializer = TrackSerializer(tracklist,many=True)
@@ -175,7 +170,7 @@ class TrackDetail(APIView):
             Track.objects.get(pk)
         except Track.DoesNotExist:
             raise Http404
-              
+
     def get(self,request,pk):
         track = self.get_object(pk)
         serializer = TrackSerializer(track)
@@ -198,7 +193,6 @@ class Playlists(APIView):
 
     def post(self,request,format=None):
         serializer = PlaylistSerializer(request.data)
-
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data)
@@ -267,4 +261,3 @@ class ArtistDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-

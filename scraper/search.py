@@ -159,7 +159,7 @@ class Search:
         playlist_images_heights = []
         playlist_images_urls = []
         playlist_images_widths = []
-
+        
         numbers =[x for x in range(self.query_limit) if (x % 50 == 0) ]
         for num in numbers:
             try:

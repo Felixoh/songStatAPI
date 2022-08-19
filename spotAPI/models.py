@@ -10,7 +10,7 @@ class Track(models.Model):
     track_Popularity = models.IntegerField(null=True)
     track_duration = models.BigIntegerField(null=True)
     track_discNo = models.IntegerField(null=True)
-    
+
     def __str__(self):  
         return self.track_Name or ''
         
@@ -22,7 +22,7 @@ class Playlist(models.Model):
     play_collabs = models.CharField(max_length=150)
     play_types = models.CharField(max_length=150)
     play_total_tracks = models.IntegerField()
-
+    
     def __str__(self): 
         return self.play_Name
  

@@ -8,3 +8,4 @@ config.py
 
 #ignore python compiled files
 *.pyc
+Procfile

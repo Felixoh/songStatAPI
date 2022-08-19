@@ -115,7 +115,7 @@ DATABASES = {
         'ENGINE':'django.db.backends.postgresql',
         'NAME':'SpotAPI',
         'USER':'postgres',
-        'PASSWORD':'Fm@35691982',
+        'PASSWORD':'Fm0@35691982',
         'HOST':'localhost',
         'PORT':'5432'
     }
@@ -178,7 +178,7 @@ SIMPLE_JWT = {
     'ISSUER': None,
     'JWK_URL': None,
     'LEEWAY': 0,
-
+    
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'USER_ID_FIELD': 'id',
@@ -211,3 +211,4 @@ CELERY_RESULT_BACKEND = 'django-db'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 USE_TZ = False
+VERIFY_EXPIRE_DAYS = 3

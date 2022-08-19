@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
-class SpotapiConfig(AppConfig):
+
+class SubsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'spotAPI'
+    name = 'Subs'
