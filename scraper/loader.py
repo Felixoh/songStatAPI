@@ -9,15 +9,14 @@ expected Efficiecy:
 import csv
 from django.core.management import BaseCommand
 from django.utils import timezone
-
 from products.models import ProductCategory, Product
 
 class Command(BaseCommand):
     help = "Loads products and product categories from CSV file."
- 
+
     def add_arguments(self, parser):
         parser.add_argument("file_path", type=str)
-
+        
     def handle(self, *args, **options): 
         start_time = timezone.now()
         file_path = options["file_path"]

@@ -1,21 +1,21 @@
-from rest_framework.response import Response
-from rest_framework import permissions,status,serializers
-
+from rest_framework import serializers
 from users.models import NewUser
 from spotAPI.models import Album,Track,Playlist,Artist
 
 class UsersSerializer(serializers.ModelSerializer):
-    '''
-    Model serializers to list and preview account details about the system users:
     
     '''
+    Model serializers to list and preview account details about the system users:
+    '''
+    
     class Meta:
         model = NewUser
         fields = '__all__'
 
 class HitJobSerializer(serializers.Serializer):
     '''
-    redis simple request for scraper to start execution:
+    redis simple request for scraper to start execution of assyncronous tasks behind the scenes.
+
     '''
     target_name = serializers.CharField(allow_blank=False,min_length=2,max_length=400)
 

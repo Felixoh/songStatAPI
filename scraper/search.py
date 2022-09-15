@@ -17,7 +17,10 @@ class Search:
     Python class wrapper for all API search functionalities for this scraper module 
     Search has the following methods:
     1. tracks
+    // Get only playlist IDs
     2. playlist
+
+    //Get only Artist information.
     3. artist
     4. album
     5. get track ids from music
@@ -368,7 +371,7 @@ class Search:
         artist_type=[]
         artist_uri =[]
         artist_href =[]
-        
+
         for num in numbers:
             try:
                 data = self.sp.search(query,self.limit,num,type="artist")
@@ -397,7 +400,7 @@ class Search:
         df6 = pd.DataFrame(artist_href)
 
         artist_infoDF = pd.concat([df1,df2,df3,df3,df4,df5,df6,df7],axis=1)
-
+        
         return artist_infoDF
 
     def search_album_artists(self,query):
@@ -536,6 +539,6 @@ class Search:
         df5 = pd.DataFrame({"track_duration":meta['duration_ms']},index=[0])
         df6 = pd.DataFrame({"track_disknumber":meta['disc_number']},index=[0])
         df7 = pd.DataFrame({"track_albID":meta['album']['id']},index=[0])
-        
+
         track_dataDF = pd.concat([df1,df2,df3,df4,df5,df6,df7],axis=1)
         return track_dataDF

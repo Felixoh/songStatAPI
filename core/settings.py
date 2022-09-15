@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'spotAPI',
+    'Subs',
     'rest_framework_simplejwt.token_blacklist',
     'django_celery_results',
     'rest_framework_swagger',
@@ -163,7 +164,7 @@ AUTH_USER_MODEL = "users.NewUser"
 
 #jwt token common configuration parameters:
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
@@ -176,7 +177,7 @@ SIMPLE_JWT = {
     'VERIFYING_KEY': None,
     'AUDIENCE': None,
     'ISSUER': None,
-    'JWK_URL': None,
+    'JWT_URL': None,
     'LEEWAY': 0,
     
     'AUTH_HEADER_TYPES': ('Bearer',),
@@ -198,13 +199,14 @@ SIMPLE_JWT = {
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-
 #celery default configurations
+# any of these two brokers can be used in the project :
+
 # broker_url = 'amqp://guest:guest@localhost:5672//'
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
- 
+
 # CELERY_TASK_SERIALIZER = 'Asia/Kolkata'
 CELERY_RESULT_BACKEND = 'django-db'
 
@@ -212,3 +214,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 USE_TZ = False
 VERIFY_EXPIRE_DAYS = 3
+

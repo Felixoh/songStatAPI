@@ -1,8 +1,100 @@
 import csv
 from django.utils import timezone
-from spotAPI.models import Track,Playlist,Album,Artist,Image
+from spotAPI.models import Track,Playlist,Album,Image
 from django.db.utils import IntegrityError
+# from Subs.models import Artist,ArtistInfo
 
+# def save_artistDT(id,name):
+#     # this object file will search for an artist'name and create related object in the database
+#     with open("assets/artistinfo_csv.csv","r",encoding="utf8") as csv_file:
+#         data = csv.reader(csv_file,delimiter=",")
+#         artists = {art.name : art for art in Artist.objects.all()}
+#         for row in data:
+#             try:
+#                 art_name = row[1]
+#                 art_id = row[2]
+#                 art_follower = row[3]
+#                 art_popularity = row[4]
+#                 art_type = row[5]
+#                 art_uri = row[6]
+#                 art_href = row[7]
+
+#                 art_Name = artists.get(art_name)
+#                 artist_dt = []
+
+#                 if name == art_Name:
+#                     art_Name = ArtistInfo.objects.create(
+#                         # artist=artists.get(id),
+#                         artist=id,
+#                         art_id = art_id,
+#                         art_followers = art_follower,
+#                         art_popularity = art_popularity,
+#                         art_type = art_type,
+#                         art_URI = art_uri,
+#                         art_href = art_href
+#                     )
+#             except:
+#                 pass 
+    
+
+
+def save_artistInfo():
+    '''
+    get information about an artist and save to the related table data if available.
+    '''
+
+    with open("assets/artistinfo_csv.csv","r",encoding="utf8") as csv_file:
+        data = csv.reader(csv_file,delimiter=",")
+        artists = {art.art_SpotID : art for art in Artist.objects.all()}
+
+        for row in data:
+            try:
+                art_name = row[1]
+                art_id = row[2]
+                art_follower = row[3]
+                art_popularity = row[4]
+                art_type = row[5]
+                art_uri = row[6]
+                art_href = row[7]
+
+                art_ID  = artists.get(art_id)
+                artist_dt = []
+                if not art_ID:
+                    art_ID = Artist.objects.create(
+                        art_SpotID= art_id,
+                        art_Name = art_name,
+                        art_popularity = art_popularity,
+                        art_URI = art_uri,
+                        art_type = art_type,
+                        art_HREF = art_href,
+                        art_followers = art_follower,
+                    )
+                    artists[art_ID.art_SpotID] = art_ID
+
+                artists[art_ID.art_SpotID] = art_ID
+                art_info = Artist(
+                    art_SpotID= art_id,
+                    art_Name = art_name,
+                    art_popularity = art_popularity,
+                    art_URI = art_uri,
+                    art_type = art_type,
+                    art_HREF = art_href,
+                    art_followers = art_follower,
+                )
+
+                artist_dt.append(art_info)
+                if len(artist_dt) > 5000:
+                    try:
+                        Artist.objects.bulk_create(artist_dt)
+                        artist_dt = []
+                    except IntegrityError:
+                        continue
+                if artist_dt:
+                    Artist.objects.create(artist_dt)
+            except:
+                continue
+
+# ###########################################
 def save_track_albums():
     with open("assets/track_albums.csv","r") as csv_file:
         data = csv.reader(csv_file,delimiter=",")
@@ -81,62 +173,7 @@ def save_track_info():
             except:
                 continue
 
-def save_artistInfo():
-    '''
-    Template for information about an artist and all related data to be stored in database:
-    @testing phase ...
 
-    '''
-    with open("assets/artistinfo_csv.csv","r",encoding="utf8") as csv_file:
-        data = csv.reader(csv_file,delimiter=",")
-        artists = {art.art_SpotID : art for art in Artist.objects.all()}
-
-        for row in data:
-            try:
-                art_name = row[1]
-                art_id = row[2]
-                art_follower = row[3]
-                art_popularity = row[4]
-                art_type = row[5]
-                art_uri = row[6]
-                art_href = row[7]
-
-                art_ID  = artists.get(art_id)
-                artist_dt = []
-                if not art_ID:
-                    art_ID = Artist.objects.create(
-                        art_SpotID= art_id,
-                        art_Name = art_name,
-                        art_popularity = art_popularity,
-                        art_URI = art_uri,
-                        art_type = art_type,
-                        art_HREF = art_href,
-                        art_followers = art_follower,
-                    )
-                    artists[art_ID.art_SpotID] = art_ID
-
-                artists[art_ID.art_SpotID] = art_ID
-                art_info = Artist(
-                    art_SpotID= art_id,
-                    art_Name = art_name,
-                    art_popularity = art_popularity,
-                    art_URI = art_uri,
-                    art_type = art_type,
-                    art_HREF = art_href,
-                    art_followers = art_follower,
-                )
-
-                artist_dt.append(art_info)
-                if len(artist_dt) > 5000:
-                    try:
-                        Artist.objects.bulk_create(artist_dt)
-                        artist_dt = []
-                    except IntegrityError:
-                        continue
-                if artist_dt:
-                    Artist.objects.create(artist_dt)
-            except:
-                continue
 
 def save_playlistInfo():
     '''

@@ -40,7 +40,6 @@ class Concurrent(Search):
                     if res.exception:
                         pass
 
-
     def fetch_playlists(self):
         dto_obj = Dto()
         plays = dto_obj.read_playlist_keyword()
@@ -49,7 +48,7 @@ class Concurrent(Search):
 
         chunksize = round(len(play_ids) / n_workers)
         with ThreadPoolExecutor(n_workers) as executor:
-            #split the operation of workers into chunks to fetch data::
+            #split the operation of workers into chunks to fetch concurrently data from Spotify.
             for i in range(0,len(play_ids),chunksize):
                 playlist_ids = play_ids[i:(i+chunksize)]
                 result = [executor.submit(dto_obj.writeto_playlist_data,id) for id in playlist_ids]
@@ -58,7 +57,6 @@ class Concurrent(Search):
                         pass
                     if res.exception:
                         pass
-
 
     def fetch_playlist_owners(self):
         pass

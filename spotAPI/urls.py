@@ -2,7 +2,7 @@ from django.urls import path
 from .views import   AlbumDetail,StartNewWorker,ScheduleNewWorker,AlbumsList, TrackDetail, TrackList,Playlists,PlaylistDetail,Artists,ArtistDetail,SearchView,Users
 
 urlpatterns = [
-    #users management
+    #users management 
     path('users/',Users.as_view()),
 
     #periodic scheduling task endpoints ...

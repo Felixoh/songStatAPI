@@ -6,7 +6,7 @@ from users.models import NewUser
 from .serializers import HitJobSerializer,AlbumsSerializer,PlaylistSerializer, TrackSerializer,ArtistSerializer,SearchSerializer,ScheduleJobSerializer,UsersSerializer
 
 from rest_framework import permissions,status
-from .tasks import fetch_albumsDT,fetch_track_info
+from .tasks import fetch_artists
 from spotAPI.models import Album,Track,Artist,Playlist
 from scraper.search import search_all
 from dateutil import parser
@@ -18,22 +18,20 @@ import json
 class StartNewWorker(APIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = HitJobSerializer
+
     def post(self,request):
         name = request.data.get("target_name")
-        serializer_class = HitJobSerializer
-
         #task scheduling ::
-        celery_task1 = fetch_albumsDT.delay()
-        trackinfo_task = fetch_track_info.delay()
+        celery_task1 = fetch_artists.delay()
+        # trackinfo_task = fetch_playlist.delay()
         # fetch_artists = save_track_alb.delay()
-        #DRF responses  to created tasks and tasks  in completion status undergoing testing phases
-
+        #DRF responses  to created tasks and tasks  in completion
         return Response(
+            
             data ={
+                "success":"task created",
                 "result":f"job created for {name}",
-                "celery_task2_id": celery_task1.id,
-                "trackinfo_task": trackinfo_task.id,
-                # "fetch_artists": fetch_artists.id
+                "celery_fetcingartists_id": celery_task1.id,
             },
             status = status.HTTP_200_OK
         )
@@ -41,7 +39,7 @@ class StartNewWorker(APIView):
 class ScheduleNewWorker(APIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ScheduleJobSerializer
-
+    
     def post(self,request):
         name = request.data.get("target_name")
         schedule_time = parser.parse(request.data.get("schedule_time"))
@@ -67,7 +65,7 @@ class ScheduleNewWorker(APIView):
         )
 
 class SearchView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     serializer_class = SearchSerializer
 
     def post(self,request):
@@ -85,7 +83,7 @@ class Users(APIView):
 
     permission_classes = [permissions.IsAdminUser]
     def get(self,request,format=None):
-        album = NewUser.objects.all()[1:30]
+        album = NewUser.objects.all()
         serializer = UsersSerializer(album,many=True)
         return Response(serializer.data)
     
@@ -96,11 +94,13 @@ class Users(APIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+
 class AlbumsList(APIView):
     '''
     Lists an Album and allow user create a new Album
+
     '''
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self,request,format=None):
         album = Album.objects.all()[1:30]
@@ -145,7 +145,7 @@ class AlbumDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class TrackList(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     def get(self,request,format=None):
         tracklist = Track.objects.all()[:31]
         serializer = TrackSerializer(tracklist,many=True)
@@ -158,7 +158,7 @@ class TrackList(APIView):
         return Response(serializer.data)
 
 class TrackDetail(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     serializer_class = TrackSerializer
 
     '''
@@ -184,7 +184,7 @@ class TrackDetail(APIView):
             return Response(serializer.data)
 
 class Playlists(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self,request,format=None):
         playlist = Playlist.objects.all()
@@ -198,7 +198,7 @@ class Playlists(APIView):
         return Response(serializer.data)
 
 class PlaylistDetail(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     '''
     serializer object for getting details related to tracks data
 
@@ -208,7 +208,7 @@ class PlaylistDetail(APIView):
         try:
             Playlist.objects.get(pk)
         except Playlist.DoesNotExist:
-            raise Http404
+            raise Http404 
         
     def get(self,request,pk):
         playlist = self.get_object(pk)
@@ -223,7 +223,7 @@ class PlaylistDetail(APIView):
             return Response(serializer.data)
 
 class Artists(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self,request,format=None):
         artist = Artist.objects.all()
@@ -237,13 +237,13 @@ class Artists(APIView):
         return Response(serializer.data)
 
 class ArtistDetail(APIView): 
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     '''
     serializer object for getting details related to tracks data
 
     '''
-
+    
     def get_object(self,pk):
         try:
             Artist.objects.get(pk)

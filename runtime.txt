@@ -1,1 +1,11 @@
 python-3.9.4
+
+
+## Command  to start task on windows 
+celery -A core worker --pool=solo -l info
+
+type: > 
+redis-server shutdown save
+
+redis-server --service-start
+redis-server --service-stop

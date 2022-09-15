@@ -4,6 +4,8 @@ from django.forms import Textarea
 from django.db import models
 from users.models import NewUser,UserSettings,Membership,PayHistory,UserMembership,Subscription
 from django.forms import *
+from spotAPI.admin import musicApp
+
 
 # Register your models here.
 class UserAdminConfig(UserAdmin):
@@ -27,6 +29,14 @@ class UserAdminConfig(UserAdmin):
             }
         )
     )
+
+# musicApp.register(NewUser,UserAdminConfig)
+# musicApp.register(UserSettings)
+# musicApp.register(Membership)
+# musicApp.register(PayHistory)
+# musicApp.register(UserMembership)
+# musicApp.register(Subscription)
+
 
 admin.site.register(NewUser,UserAdminConfig)
 admin.site.register(UserSettings)

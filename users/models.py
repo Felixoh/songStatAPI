@@ -21,7 +21,7 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError('Superuser must be assigned to is_staff=True')
         if other_fields.get('is_staff') is not True:
             raise ValueError('superuser must be assigned to is_superuser=True')
-        
+            
         return self.create_user(email,user_name,first_name,password,**other_fields)
     
     def create_user(self,email,user_name,first_name,password,**other_fields):
@@ -40,12 +40,12 @@ class NewUser(AbstractBaseUser,PermissionsMixin):
     first_name = models.CharField(max_length=150,blank=True)
     start_date = models.DateTimeField(default=timezone.now)
     about = models.TextField(_('about'),max_length=500,blank=True)
-    
+
     # new users to be created will be inactive and unable to login
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     objects = CustomAccountManager()
-    
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['user_name','first_name']
 
@@ -62,8 +62,8 @@ class UserSettings(models.Model):
     receive_email_notice = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.user.username
-         
+        return self.user.user_name
+
 # Membership data
 class Membership(models.Model):
     MEMBERSHIP_CHOICES = (
@@ -97,7 +97,7 @@ class PayHistory(models.Model):
     payment_for = models.ForeignKey(Membership,on_delete=models.SET_NULL,null=True,blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.user_name
 
 class UserMembership(models.Model):
     user = models.OneToOneField(NewUser,related_name="user_membership",on_delete=models.CASCADE)
@@ -118,9 +118,10 @@ class Subscription(models.Model):
     user_membership = models.ForeignKey(UserMembership,related_name='subscription',on_delete=models.CASCADE,default=None)
     expires_in = models.DateField(null=True,blank=True)
     active = models.BooleanField(default=True)
+
     def __str__(self):
         return self.user_membership.user.user_name
-        
+
 # signal to deactivate user after expriration date.
 @receiver(post_save,sender=Subscription)
 def update_active(sender,instance,*args,**kwargs):
