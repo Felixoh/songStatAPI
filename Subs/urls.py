@@ -8,5 +8,5 @@ urlpatterns = [
     path('artistList/',ArtistInfoSerializer.as_view()),
 
     # subscribe to a certain info data as below seen.
-    path('artistInfo/<str:pk>/',ArtistInfoListSerializer.as_view())
+    path('artistInfo/<int:pk>/',ArtistInfoListSerializer.as_view())
 ]

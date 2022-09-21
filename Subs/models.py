@@ -18,7 +18,7 @@ class Artist(models.Model):
 class Label(models.Model):
     name = models.CharField(max_length=50)
     artists = models.ForeignKey(Artist,on_delete=models.CASCADE)
-
+    
     def __str__(self):
         return self.name
 
@@ -54,6 +54,7 @@ def create_artistInfo(sender,instance,*args,**kwargs):
                             art_URI = art_uri,
                             art_href = art_href
                         )
+                        
                 except:
                     pass 
         # ArtistInfo.objects.create(artist=instance,)
@@ -67,7 +68,7 @@ class ArtistInfo(models.Model):
     art_type = models.CharField(max_length=50,blank=True)
     art_URI = models.CharField(max_length=100,blank=True)
     art_href = models.CharField(max_length=100,blank=True)
-    
+
     def __str__(self):
 
         return self.artist.name
